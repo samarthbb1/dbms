@@ -1,0 +1,108 @@
+
+CREATE DATABASE AirlineDB;
+USE AirlineDB;
+
+CREATE TABLE Employees (
+    eid INT PRIMARY KEY,
+    ename VARCHAR(50),
+    salary INT
+);
+
+CREATE TABLE Aircraft (
+    aid INT PRIMARY KEY,
+    aname VARCHAR(50),
+    cruisingrange INT
+);
+
+CREATE TABLE Flights (
+    fno INT PRIMARY KEY,
+    source VARCHAR(50),
+    destination VARCHAR(50),
+    distance INT,
+    departs TIME,
+    arrives TIME,
+    price REAL
+);
+
+CREATE TABLE Certified (
+    eid INT,
+    aid INT,
+    PRIMARY KEY (eid, aid),
+    FOREIGN KEY (eid) REFERENCES Employees(eid),
+    FOREIGN KEY (aid) REFERENCES Aircraft(aid)
+);
+
+INSERT INTO Employees VALUES (1, 'Gagan', 90000);
+INSERT INTO Employees VALUES (2, 'Ravi', 70000);
+INSERT INTO Employees VALUES (3, 'Anu', 85000);
+INSERT INTO Employees VALUES (4, 'Kiran', 60000);
+
+
+INSERT INTO Aircraft VALUES (101, 'Boeing737', 1500);
+INSERT INTO Aircraft VALUES (102, 'AirbusA320', 1200);
+INSERT INTO Aircraft VALUES (103, 'Boeing777', 3000);
+INSERT INTO Aircraft VALUES (104, 'AirbusA380', 5000);
+
+
+INSERT INTO Flights VALUES (1, 'Bangalore', 'Frankfurt', 7000, '10:00:00', '20:00:00', 80000);
+INSERT INTO Flights VALUES (2, 'Bangalore', 'Delhi', 2000, '09:00:00', '12:00:00', 20000);
+
+
+INSERT INTO Certified VALUES (1, 101);
+INSERT INTO Certified VALUES (1, 102);
+INSERT INTO Certified VALUES (1, 103);
+INSERT INTO Certified VALUES (1, 104);
+
+INSERT INTO Certified VALUES (2, 101);
+INSERT INTO Certified VALUES (2, 102);
+
+INSERT INTO Certified VALUES (3, 101);
+INSERT INTO Certified VALUES (3, 102);
+INSERT INTO Certified VALUES (3, 103);
+INSERT INTO Certified VALUES (3, 104);
+
+INSERT INTO Certified VALUES (4, 101);
+
+
+SELECT * FROM Employees;
+SELECT * FROM Aircraft;
+SELECT * FROM Flights;
+SELECT * FROM Certified;
+
+
+SELECT DISTINCT A.aname
+FROM Aircraft A
+WHERE A.aid IN (
+    SELECT C.aid FROM Certified C
+)
+AND NOT EXISTS (
+    SELECT *
+    FROM Certified C
+    JOIN Employees E ON C.eid = E.eid
+    WHERE C.aid = A.aid
+    AND E.salary <= 80000
+);
+
+SELECT C.eid, MAX(A.cruisingrange) AS max_range
+FROM Certified C
+JOIN Aircraft A ON C.aid = A.aid
+GROUP BY C.eid
+HAVING COUNT(C.aid) > 3;
+
+
+SELECT E.ename
+FROM Employees E
+WHERE E.salary < (
+    SELECT MIN(F.price)
+    FROM Flights F
+    WHERE F.source = 'Bangalore'
+    AND F.destination = 'Frankfurt'
+);
+
+
+SELECT A.aname, AVG(E.salary) AS avg_salary
+FROM Aircraft A
+JOIN Certified C ON A.aid = C.aid
+JOIN Employees E ON C.eid = E.eid
+WHERE A.cruisingrange > 1000
+GROUP BY A.aid, A.aname;
