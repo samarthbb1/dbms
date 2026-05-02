@@ -1,0 +1,38 @@
+CREATE TABLE Student (
+    USN VARCHAR(15),
+    Name VARCHAR(50),
+    Dept VARCHAR(10),
+    Year INT,
+    Marks INT
+);
+
+INSERT INTO Student VALUES ('SG24CSD030', 'Kunal', 'CSD', 2, 95);
+INSERT INTO Student VALUES ('SG24CSD045', 'Rohit', 'CSD', 2, 92);
+INSERT INTO Student VALUES ('SG24CSD020', 'Gagan', 'CSD', 2, 99);
+INSERT INTO Student VALUES ('SG24CSD010', 'Bhavaneshkumar', 'CSD', 2, 96);
+
+SELECT * FROM Student;
+
+SELECT AVG(Marks) AS Average_Marks FROM Student;
+
+SELECT MAX(Marks) AS Max_Marks FROM Student;
+
+SELECT MIN(Marks) AS Min_Marks FROM Student;
+
+SELECT SUM(Marks) AS Total_Marks FROM Student;
+
+SELECT COUNT(*) AS Total_Students FROM Student;
+
+SELECT Dept, AVG(Marks) AS Avg_Marks
+FROM Student
+GROUP BY Dept
+HAVING Avg (marks)>90;
+
+Create view HighScore AS
+Select USN,name,Dept,Marks
+From student
+where Marks>95;
+Select * from HighScore;
+
+Drop view HighScore;
+Select * from HighScore;
