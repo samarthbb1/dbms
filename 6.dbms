@@ -1,0 +1,29 @@
+sql  hr/oracle@localhost:1521/freepdb1
+set serveroutput on
+
+DECLARE
+    a NUMBER := 10;
+    b NUMBER := 25;
+    c NUMBER := 15;
+    max_num NUMBER;
+BEGIN
+    IF a > b AND a > c THEN
+        max_num := a;
+    ELSIF b > a AND b > c THEN
+        max_num := b;
+    ELSE
+        max_num := c;
+    END IF;
+    DBMS_OUTPUT.PUT_LINE('Maximum number is: ' || max_num);
+END;
+/
+OR 
+DECLARE
+    a NUMBER := 10;
+    b NUMBER := 25;
+    c NUMBER := 15;
+    max_num NUMBER;
+BEGIN
+    max_num := GREATEST(a, b, c);
+    DBMS_OUTPUT.PUT_LINE('Maximum number is: ' || max_num);
+END; /
