@@ -6,14 +6,11 @@ first_name varchar2(50),
 last_name varchar(50),
 marks number);
 
-insert into students1(student_id,first_name,last_name,marks) 
-values(101,'Raj','Kumar',85);
+insert into students1 values(101,'Raj','Kumar',85);
 
-insert into students1(student_id,first_name,last_name,marks) 
-values(102,'Raj','shaker',90);
+insert into students1 values(102,'Raj','shaker',90);
 
-insert into students1(student_id,first_name,last_name,marks) 
-values(103,'shiva','kumar',95);
+insert into students1 values(103,'shiva','kumar',95);
 
 DECLARE
 CURSOR c_students1 is SELECT student_id,first_name,last_name,marks from 
