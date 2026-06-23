@@ -1,0 +1,43 @@
+db.students.insertOne((name:"Sunitha", Year:"2021",faculty:"Engineering College", Branch:"CSE"})
+{
+    acknowledged: true,
+    insertedId: ObjectId('6a21570ab9534656ebabc114')
+}
+
+// to check the inserted data
+test > db.students.find()
+
+{
+    _id: ObjectId('6a21570ab9534656ebabc114'),
+    name: 'Sunitha',
+    Year: '2021',
+    faculty: 'Engineering College',
+    Branch: 'CSE'
+}
+
+// for updation of data
+test > db.students.updateOne({name: "Sunitha"}, {$set: {Year: "2022"}})
+{
+    acknowledged: true,
+    insertedId: null,
+    matchedCount: 1,
+    modifiedCount: 1,
+    upsertedCount: 0
+}
+
+// To check the updates
+test > db.students.find()
+
+{
+    _id: ObjectId('6a21570ab9534656ebabc114'),
+    name: 'Sunitha',
+    Year: '2022',
+}
+faculty: 'Engineering College',
+Branch: 'CSE'
+}
+
+// for deletion of inserted data
+test> db.students.deleteOne({name:"Sunitha"})
+{ acknowledged: true, deletedCount: 1 }
+test> db.students.find()
